@@ -111,6 +111,12 @@ class _OrderPageState extends State<OrderPage> with SingleTickerProviderStateMix
     );
   }
 
+  void _clearOrder() {
+    setState(() {
+      userOrder = List.filled(4, null);
+      placedNumbers.clear();
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -149,7 +155,7 @@ class _OrderPageState extends State<OrderPage> with SingleTickerProviderStateMix
               ),
             ),
             Positioned(
-              top: 25,
+              top: 15,
               left: 0,
               right: 0,
               child: Column(
@@ -183,7 +189,7 @@ class _OrderPageState extends State<OrderPage> with SingleTickerProviderStateMix
               ),
             ),
             Positioned(
-              top: 140,
+              top: 120,
               left: 50,
               right: 50,
               child: Wrap(
@@ -197,7 +203,7 @@ class _OrderPageState extends State<OrderPage> with SingleTickerProviderStateMix
               ),
             ),
             Positioned(
-              bottom: 100,
+              bottom: 120,
               left: 0,
               right: 0,
               child: Row(
@@ -206,7 +212,7 @@ class _OrderPageState extends State<OrderPage> with SingleTickerProviderStateMix
               ),
             ),
             Positioned(
-              top: MediaQuery.of(context).size.height * 0.45,
+              top: MediaQuery.of(context).size.height * 0.4, // Adjusted to move the otter slightly up
               left: 0,
               right: 0,
               child: Center(
@@ -221,6 +227,33 @@ class _OrderPageState extends State<OrderPage> with SingleTickerProviderStateMix
                   child: SvgPicture.asset(
                     "assets/otter.svg",
                     width: 160,
+                  ),
+                ),
+              ),
+            ),
+            Positioned(
+              bottom: 60,
+              left: 0,
+              right: 0,
+              child: Center(
+                child: ElevatedButton(
+                  onPressed: _clearOrder,
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.red,
+                    padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(30),
+                      side: const BorderSide(color: Colors.white, width: 3),
+                    ),
+                  ),
+                  child: const Text(
+                    "Clear",
+                    style: TextStyle(
+                      fontFamily: 'Super Bubble',
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
+                    ),
                   ),
                 ),
               ),
@@ -241,6 +274,15 @@ class _OrderPageState extends State<OrderPage> with SingleTickerProviderStateMix
   }
 
   Widget _buildDropTarget(int index) {
+    double baseWidth = 85; // Fixed width for all boxes
+    double baseHeight = 100; // Base height for the smallest box
+    double scaleFactor = 20; // Increase/decrease factor for height
+
+    // Calculate height based on ascending or descending order
+    double height = isAscending
+        ? baseHeight + (index * scaleFactor)  // Increase height in ascending order
+        : baseHeight + ((3 - index) * scaleFactor);  // Decrease height in descending order
+
     return DragTarget<int>(
       onWillAcceptWithDetails: (data) => !placedNumbers.contains(data),
       onAcceptWithDetails: (details) {
@@ -256,14 +298,14 @@ class _OrderPageState extends State<OrderPage> with SingleTickerProviderStateMix
       },
       builder: (context, candidateData, rejectedData) {
         return Container(
-          width: 85,
-          height: 110,
+          width: baseWidth,  // Keep width fixed
+          height: height,   // Adjust height based on order
           decoration: BoxDecoration(
             color: Colors.white,
             border: Border.all(color: Colors.pink, width: 4),
             borderRadius: BorderRadius.circular(12),
           ),
-          alignment: Alignment.center,
+          alignment: Alignment.center,  // Align the content in the center of the card
           child: userOrder[index] != null
               ? Text(
             userOrder[index].toString(),
@@ -283,7 +325,7 @@ class _OrderPageState extends State<OrderPage> with SingleTickerProviderStateMix
         color: color,
         borderRadius: BorderRadius.circular(12),
       ),
-      alignment: Alignment.center,
+      alignment: Alignment.center,  // Center the number in the box
       child: number != null
           ? Text(
         number.toString(),

@@ -48,7 +48,7 @@ class _ComparePageState extends State<ComparePage> {
       showDialog(
         context: context,
         builder: (context) => AlertDialog(
-          title: Center( // Centering the title properly
+          title: Center(
             child: Text(
               message,
               style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
@@ -56,7 +56,7 @@ class _ComparePageState extends State<ComparePage> {
           ),
           actions: [
             SizedBox(
-              width: double.infinity, // Make button take full width
+              width: double.infinity,
               child: ElevatedButton(
                 onPressed: () {
                   Navigator.pop(context);
@@ -76,7 +76,7 @@ class _ComparePageState extends State<ComparePage> {
                       "Next",
                       style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.white),
                     ),
-                    SizedBox(width: 10), // Space between text and icon
+                    SizedBox(width: 10),
                     Icon(Icons.arrow_forward, color: Colors.white, size: 24),
                   ],
                 ),
@@ -88,6 +88,14 @@ class _ComparePageState extends State<ComparePage> {
     }
   }
 
+  void _clearSelection() {
+    setState(() {
+      leftCardNumber = null;
+      rightCardNumber = null;
+      isNumber1Used = false;
+      isNumber2Used = false;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -96,13 +104,13 @@ class _ComparePageState extends State<ComparePage> {
         title: const Text(
           "Comparison of Numbers",
           style: TextStyle(
-            color: Colors.white, // Set text color to white
+            color: Colors.white,
             fontWeight: FontWeight.bold,
           ),
         ),
         backgroundColor: const Color(0xFFCF2677),
         centerTitle: true,
-        iconTheme: const IconThemeData(color: Colors.white), // Ensures back button is also white
+        iconTheme: const IconThemeData(color: Colors.white),
       ),
       body: Container(
         width: double.infinity,
@@ -125,6 +133,7 @@ class _ComparePageState extends State<ComparePage> {
             _buildTitle(),
             _buildDraggableNumbers(),
             _buildDropTargets(),
+            _buildClearButton(),
           ],
         ),
       ),
@@ -184,7 +193,7 @@ class _ComparePageState extends State<ComparePage> {
 
   Widget _buildDropTargets() {
     return Positioned(
-      bottom: 60,
+      bottom: 150,
       left: 0,
       right: 0,
       child: Column(
@@ -276,6 +285,37 @@ class _ComparePageState extends State<ComparePage> {
           ),
         );
       },
+    );
+  }
+
+  Widget _buildClearButton() {
+    return Positioned(
+      bottom: 60,
+      left: 0,
+      right: 0,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 130),
+        child: ElevatedButton(
+          onPressed: _clearSelection,
+          style: ElevatedButton.styleFrom(
+            backgroundColor: Colors.red,
+            padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(30),
+              side: const BorderSide(color: Colors.white, width: 3),
+            ),
+          ),
+          child: const Text(
+            "Clear",
+            style: TextStyle(
+              fontFamily: 'Super Bubble',
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
+              color: Colors.white,
+            ),
+          ),
+        ),
+      ),
     );
   }
 }
