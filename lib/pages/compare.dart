@@ -233,11 +233,11 @@ class _ComparePageState extends State<ComparePage> {
       },
       builder: (context, candidateData, rejectedData) {
         return Container(
-          width: 100,
-          height: 130,
+          width: 110,
+          height: 140,
           decoration: BoxDecoration(
             color: Colors.white,
-            border: Border.all(color: Colors.brown, width: 3), // Add visible border
+            border: Border.all(color: Colors.pink, width: 4), // Add visible border
             borderRadius: BorderRadius.circular(12),
           ),
           alignment: Alignment.center,

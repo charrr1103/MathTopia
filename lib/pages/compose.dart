@@ -76,13 +76,13 @@ class _ComposePageState extends State<ComposePage> {
                   children: numbers.map((num) => _buildDraggableNumber(num)).toList(),
                 ),
 
-                const SizedBox(height: 60),
+                const SizedBox(height: 50),
 
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     _buildDropTarget(0),
-                    const SizedBox(width: 120), // Adds space between the two drop targets
+                    const SizedBox(width: 130), // Adds space between the two drop targets
                     _buildDropTarget(1),
                   ],
                 ),
@@ -150,11 +150,12 @@ class _ComposePageState extends State<ComposePage> {
           children: [
             // Brown box instead of tree stump
             Container(
-              width: 100,
-              height: 100,
+              width: 90,
+              height: 110,
               decoration: BoxDecoration(
-                color: Colors.brown.shade300,
+                color: Colors.white,
                 borderRadius: BorderRadius.circular(12),
+                border: Border.all(color: Colors.pink, width: 4), // Pink border
               ),
             ),
             // Number Displayed on Drop Target
@@ -164,7 +165,7 @@ class _ComposePageState extends State<ComposePage> {
                 style: const TextStyle(
                   fontSize: 32,
                   fontWeight: FontWeight.bold,
-                  color: Colors.white,
+                  color: Colors.black, // 🟢 Change from white to black for visibility
                 ),
               ),
           ],
