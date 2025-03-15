@@ -90,9 +90,9 @@ class _OrderPageState extends State<OrderPage> with SingleTickerProviderStateMix
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(
-          isAscending ? "Arrange in Ascending Order" : "Arrange in Descending Order",
-          style: const TextStyle(
+        title: const Text(
+          "Order the Numbers",
+          style: TextStyle(
             fontWeight: FontWeight.bold,
           ),
         ),
@@ -121,33 +121,37 @@ class _OrderPageState extends State<OrderPage> with SingleTickerProviderStateMix
               ),
             ),
             Positioned(
-              top: 50,
+              top: 25,
               left: 0,
               right: 0,
-              child: Center(
-                child: Text(
-                  "Drag the numbers",
-                  style: TextStyle(
-                    fontSize: 28,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.brown.shade700,
+              child: Column(
+                children: [
+                  Text(
+                    "Drag the numbers",
+                    style: TextStyle(
+                      fontSize: 23,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.brown.shade700,
+                    ),
                   ),
-                ),
-              ),
-            ),
-            Positioned(
-              top: 90,
-              left: 0,
-              right: 0,
-              child: Center(
-                child: Text(
-                  "into the cards below",
-                  style: TextStyle(
-                    fontSize: 28,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.brown.shade700,
+                  Text(
+                    "into the cards below.",
+                    style: TextStyle(
+                      fontSize: 23,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.brown.shade700,
+                    ),
                   ),
-                ),
+                  const SizedBox(height: 0),
+                  Text(
+                    isAscending ? "Arrange in Ascending Order 🔼" : "Arrange in Descending Order 🔽",
+                    style: TextStyle(
+                      fontSize: 23,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.brown.shade700,
+                    ),
+                  ),
+                ],
               ),
             ),
             Positioned(

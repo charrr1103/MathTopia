@@ -3,9 +3,38 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:math_topia/pages/compare.dart';
 import 'package:math_topia/pages/order.dart';
 import 'package:math_topia/pages/compose.dart';
+import 'package:audioplayers/audioplayers.dart';
 
-class SelectionPage extends StatelessWidget {
+class SelectionPage extends StatefulWidget {
   const SelectionPage({super.key});
+
+  @override
+  _SelectionPageState createState() => _SelectionPageState();
+}
+
+class _SelectionPageState extends State<SelectionPage> {
+  final AudioPlayer _audioPlayer = AudioPlayer();
+
+  @override
+  void initState() {
+    super.initState();
+    _playMusic();
+  }
+
+  Future<void> _playMusic() async {
+    try {
+      await _audioPlayer.setReleaseMode(ReleaseMode.loop);
+      await _audioPlayer.play(AssetSource("music.mp3"));
+    } catch (e) {
+      print("Error playing music: $e");
+    }
+  }
+
+  @override
+  void dispose() {
+    _audioPlayer.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {

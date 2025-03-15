@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:math_topia/pages/selection.dart';
+import 'package:math_topia/audio_manager.dart';
 
 class StartPage extends StatefulWidget {
   const StartPage({super.key});
@@ -10,6 +11,12 @@ class StartPage extends StatefulWidget {
 }
 
 class _StartPageState extends State<StartPage> {
+  @override
+  void initState() {
+    super.initState();
+    AudioManager().playMusic(); // Start playing background music
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -40,6 +47,23 @@ class _StartPageState extends State<StartPage> {
                   "assets/Logo.svg",
                   width: 350,
                 ),
+              ),
+            ),
+            // Mute/Unmute button at the top-right corner
+            Positioned(
+              top: 20,
+              right: 20,
+              child: IconButton(
+                icon: Icon(
+                  AudioManager().isMuted ? Icons.volume_off : Icons.volume_up,
+                  color: Colors.black,
+                  size: 30,
+                ),
+                onPressed: () {
+                  setState(() {
+                    AudioManager().toggleMute();
+                  });
+                },
               ),
             ),
             Align(

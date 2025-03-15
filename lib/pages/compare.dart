@@ -138,7 +138,6 @@ class _ComparePageState extends State<ComparePage> {
             _buildDraggable(number1, Colors.pink),
           if (!isNumber2Used && leftCardNumber != number2 && rightCardNumber != number2)
             _buildDraggable(number2, Colors.blue),
-
         ],
       ),
     );
@@ -237,17 +236,16 @@ class _ComparePageState extends State<ComparePage> {
           height: 140,
           decoration: BoxDecoration(
             color: Colors.white,
-            border: Border.all(color: Colors.pink, width: 4), // Add visible border
+            border: Border.all(color: Colors.pink, width: 4),
             borderRadius: BorderRadius.circular(12),
           ),
           alignment: Alignment.center,
           child: Text(
             isRight ? (rightCardNumber?.toString() ?? "?") : (leftCardNumber?.toString() ?? "?"),
-            style: const TextStyle(fontSize: 32, fontWeight: FontWeight.bold, color: Colors.black), // Ensure visibility
+            style: const TextStyle(fontSize: 32, fontWeight: FontWeight.bold, color: Colors.black),
           ),
         );
       },
     );
   }
-
 }
