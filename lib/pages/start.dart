@@ -69,7 +69,7 @@ class _StartPageState extends State<StartPage> {
             Align(
               alignment: Alignment.bottomCenter,
               child: Padding(
-                padding: const EdgeInsets.only(bottom: 50),
+                padding: const EdgeInsets.only(bottom: 60),
                 child: ElevatedButton(
                   onPressed: () {
                     Navigator.push(

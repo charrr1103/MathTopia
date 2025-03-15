@@ -38,6 +38,7 @@ dependencies:
   audioplayers: ^6.4.0
 
   collection: any
+  flutter_launcher_icons: ^0.14.3
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -51,6 +52,7 @@ dev_dependencies:
   cupertino_icons: ^1.0.2
   google_fonts: ^6.1.0
   flutter_svg: ^2.0.9
+  flutter_launcher_icons: ^0.14.3
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
@@ -79,6 +81,7 @@ flutter:
      - assets/audio/wrong.mp3
      - assets/audio/correct.mp3
      - assets/audio/click.mp3
+     - assets/app_icon.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images
@@ -101,6 +104,13 @@ flutter:
     - family: Super Bubble
       fonts:
         - asset: fonts/SuperBubble-Rpaj3.ttf
+
+flutter_icons:
+  android: true
+  ios: true
+  image_path: "assets/app_icon.png"  # Path to your new icon image
+  adaptive_icon_background: "#ffffff"  # Background color for Android adaptive icons
+  adaptive_icon_foreground: "assets/app_icon.png"
 
   #
   # For details regarding fonts from package dependencies,
