@@ -42,9 +42,16 @@ class _SelectionPageState extends State<SelectionPage> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Select an Option"),
+        title: const Text(
+          "Select an Option",
+          style: TextStyle(
+            color: Colors.white, // Set text color to white
+            fontWeight: FontWeight.bold,
+          ),
+        ),
         backgroundColor: const Color(0xFFCF2677),
         centerTitle: true,
+        iconTheme: const IconThemeData(color: Colors.white), // Ensures back button is also white
       ),
       body: Container(
         width: double.infinity,

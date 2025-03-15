@@ -48,14 +48,39 @@ class _ComparePageState extends State<ComparePage> {
       showDialog(
         context: context,
         builder: (context) => AlertDialog(
-          title: Text(message),
+          title: Center( // Centering the title properly
+            child: Text(
+              message,
+              style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+            ),
+          ),
           actions: [
-            TextButton(
-              onPressed: () {
-                Navigator.pop(context);
-                _generateNumbers();
-              },
-              child: const Text("Next"),
+            SizedBox(
+              width: double.infinity, // Make button take full width
+              child: ElevatedButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                  _generateNumbers();
+                },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.pink,
+                  padding: const EdgeInsets.symmetric(vertical: 12),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                ),
+                child: const Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text(
+                      "Next",
+                      style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.white),
+                    ),
+                    SizedBox(width: 10), // Space between text and icon
+                    Icon(Icons.arrow_forward, color: Colors.white, size: 24),
+                  ],
+                ),
+              ),
             ),
           ],
         ),
@@ -63,16 +88,21 @@ class _ComparePageState extends State<ComparePage> {
     }
   }
 
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: const Text(
           "Comparison of Numbers",
-          style: TextStyle(fontWeight: FontWeight.bold),
+          style: TextStyle(
+            color: Colors.white, // Set text color to white
+            fontWeight: FontWeight.bold,
+          ),
         ),
         backgroundColor: const Color(0xFFCF2677),
         centerTitle: true,
+        iconTheme: const IconThemeData(color: Colors.white), // Ensures back button is also white
       ),
       body: Container(
         width: double.infinity,
