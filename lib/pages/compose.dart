@@ -36,7 +36,7 @@ class _ComposePageState extends State<ComposePage> {
   void _showResultDialog() {
     String combinedNumber = "${selectedNumbers[0]}${selectedNumbers[1]}";
     bool isCorrect = int.parse(combinedNumber) == targetNumber;
-    String message = isCorrect ? "Correct! 🎉" : "Try Again! ❌";
+    String message = isCorrect ? "Correct! 🎉" : "Wrong! ❌";
 
     showDialog(
       context: context,
@@ -164,7 +164,7 @@ class _ComposePageState extends State<ComposePage> {
                           _buildDropTarget(1),
                         ],
                       ),
-                      const SizedBox(height: 110),
+                      const SizedBox(height: 100),
                       ElevatedButton(
                         onPressed: _clearSelection,
                         style: ElevatedButton.styleFrom(

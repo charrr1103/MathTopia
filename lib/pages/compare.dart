@@ -44,6 +44,8 @@ class _ComparePageState extends State<ComparePage> {
     if (leftCardNumber != null && rightCardNumber != null) {
       bool isCorrect = (rightCardNumber! > leftCardNumber!);
       String message = isCorrect ? "Correct! 🎉" : "Try Again! ❌";
+      String buttonText = isCorrect ? "Next" : "Try Again";
+      IconData buttonIcon = isCorrect ? Icons.arrow_forward : Icons.refresh;
 
       showDialog(
         context: context,
@@ -60,24 +62,33 @@ class _ComparePageState extends State<ComparePage> {
               child: ElevatedButton(
                 onPressed: () {
                   Navigator.pop(context);
-                  _generateNumbers();
+                  if (isCorrect) {
+                    _generateNumbers(); // Generate new numbers if correct
+                  } else {
+                    _clearSelection(); // Reset selection if wrong
+                  }
                 },
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.pink,
+                  backgroundColor: Colors.pink, // Button remains pink
                   padding: const EdgeInsets.symmetric(vertical: 12),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(10),
                   ),
                 ),
-                child: const Row(
+                child: Row(
                   mainAxisSize: MainAxisSize.min,
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                      "Next",
-                      style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.white),
+                      buttonText, // "Next" or "Try Again"
+                      style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.white),
                     ),
-                    SizedBox(width: 10),
-                    Icon(Icons.arrow_forward, color: Colors.white, size: 24),
+                    const SizedBox(width: 10),
+                    Icon(
+                      buttonIcon, // Arrow if correct, refresh if incorrect
+                      color: Colors.white,
+                      size: 28,
+                    ),
                   ],
                 ),
               ),
@@ -87,6 +98,7 @@ class _ComparePageState extends State<ComparePage> {
       );
     }
   }
+
 
   void _clearSelection() {
     setState(() {

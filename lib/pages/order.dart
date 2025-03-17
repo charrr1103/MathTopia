@@ -57,18 +57,15 @@ class _OrderPageState extends State<OrderPage> with SingleTickerProviderStateMix
       if (!isAscending) correctOrder = correctOrder.reversed.toList();
 
       bool isCorrect = const ListEquality().equals(userOrder, correctOrder);
-      if (isCorrect) {
-        setState(() {
-          isCompleted = true;
-        });
-        _showResultDialog("Correct! 🎉");
-      } else {
-        _showResultDialog("Try Again! ❌");
-      }
+      setState(() {
+        isCompleted = isCorrect;
+      });
+      _showResultDialog(isCorrect ? "Correct! 🎉" : "Try Again! ❌", isCorrect);
     }
   }
 
-  void _showResultDialog(String message) {
+
+  void _showResultDialog(String message, bool isCorrect) {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
@@ -80,28 +77,40 @@ class _OrderPageState extends State<OrderPage> with SingleTickerProviderStateMix
         ),
         actions: [
           SizedBox(
-            width: double.infinity, // Full-width button
+            width: double.infinity,
             child: ElevatedButton(
               onPressed: () {
                 Navigator.pop(context);
-                _generateNumbers();
+                if (isCorrect) {
+                  _generateNumbers(); // Generate new numbers if correct
+                } else {
+                  _clearOrder(); // Only reset selection if incorrect
+                }
               },
               style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.pink,
+                backgroundColor: Colors.pink, // Changed to pink
                 padding: const EdgeInsets.symmetric(vertical: 12),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(10),
                 ),
               ),
-              child: const Row(
+              child: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   Text(
-                    "Next",
-                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.white),
+                    isCorrect ? "Next" : "Try Again",
+                    style: const TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white
+                    ),
                   ),
-                  SizedBox(width: 10), // Space between text and icon
-                  Icon(Icons.arrow_forward, color: Colors.white, size: 24),
+                  const SizedBox(width: 10),
+                  Icon(
+                    isCorrect ? Icons.arrow_forward : Icons.refresh,
+                    color: Colors.white,
+                    size: 24,
+                  ),
                 ],
               ),
             ),
@@ -110,6 +119,7 @@ class _OrderPageState extends State<OrderPage> with SingleTickerProviderStateMix
       ),
     );
   }
+
 
   void _clearOrder() {
     setState(() {
