@@ -164,7 +164,7 @@ class _ComposePageState extends State<ComposePage> {
                           _buildDropTarget(1),
                         ],
                       ),
-                      const SizedBox(height: 100),
+                      const SizedBox(height: 105),
                       ElevatedButton(
                         onPressed: _clearSelection,
                         style: ElevatedButton.styleFrom(
