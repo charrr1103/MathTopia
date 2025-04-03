@@ -1,4 +1,4 @@
-# math_topia
+# Mathtopia
 
 Mathtopia 🎮📚: A Flutter project
 Mathtopia is an interactive and educational math game designed to help young children develop number sense in a fun and engaging way! 
