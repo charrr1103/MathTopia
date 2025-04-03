@@ -1,16 +1,13 @@
 # math_topia
 
-A new Flutter project.
+Mathtopia 🎮📚: A Flutter project
+Mathtopia is an interactive and educational math game designed to help young children develop number sense in a fun and engaging way! 
+The app features three exciting game modes:
 
-## Getting Started
+Compare ➝ Drag numbers into "Smaller" or "Bigger" boxes to practice greater than and less than concepts.
 
-This project is a starting point for a Flutter application.
+Order ➝ Arrange numbers in ascending or descending order with intuitive visual cues.
 
-A few resources to get you started if this is your first Flutter project:
+Compose ➝ Build numbers by combining smaller values to understand number composition.
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+With colorful animations, playful characters, and interactive feedback, Mathtopia makes learning math enjoyable and accessible for kids.
