@@ -15,7 +15,7 @@ class _OrderPageState extends State<OrderPage> with SingleTickerProviderStateMix
   late List<int?> userOrder;
   late bool isAscending;
   bool isCompleted = false;
-  Set<int> placedNumbers = {}; // To track used numbers
+  Set<int> placedNumbers = {};
 
   late AnimationController _controller;
 
@@ -38,16 +38,16 @@ class _OrderPageState extends State<OrderPage> with SingleTickerProviderStateMix
   void _generateNumbers() {
     setState(() {
       final random = Random();
-      numbers = List.generate(4, (_) => random.nextInt(99) + 1);
-      numbers = numbers.toSet().toList(); // Remove duplicates
+      numbers = List.generate(4, (_) => random.nextInt(999) + 1); // Generate numbers from 1 to 999
+      numbers = numbers.toSet().toList();
       while (numbers.length < 4) {
-        numbers.add(random.nextInt(99) + 1);
+        numbers.add(random.nextInt(999) + 1);
       }
       numbers.shuffle();
       isAscending = random.nextBool();
       userOrder = List.filled(4, null);
       isCompleted = false;
-      placedNumbers.clear(); // Reset placed numbers
+      placedNumbers.clear();
     });
   }
 
@@ -63,7 +63,6 @@ class _OrderPageState extends State<OrderPage> with SingleTickerProviderStateMix
       _showResultDialog(isCorrect ? "Correct! 🎉" : "Try Again! ❌", isCorrect);
     }
   }
-
 
   void _showResultDialog(String message, bool isCorrect) {
     showDialog(
@@ -82,13 +81,13 @@ class _OrderPageState extends State<OrderPage> with SingleTickerProviderStateMix
               onPressed: () {
                 Navigator.pop(context);
                 if (isCorrect) {
-                  _generateNumbers(); // Generate new numbers if correct
+                  _generateNumbers();
                 } else {
-                  _clearOrder(); // Only reset selection if incorrect
+                  _clearOrder();
                 }
               },
               style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.pink, // Changed to pink
+                backgroundColor: isCorrect ? Colors.pink : Colors.orange,
                 padding: const EdgeInsets.symmetric(vertical: 12),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(10),
@@ -120,7 +119,6 @@ class _OrderPageState extends State<OrderPage> with SingleTickerProviderStateMix
     );
   }
 
-
   void _clearOrder() {
     setState(() {
       userOrder = List.filled(4, null);
@@ -135,13 +133,13 @@ class _OrderPageState extends State<OrderPage> with SingleTickerProviderStateMix
         title: const Text(
           "Order the Numbers",
           style: TextStyle(
-            color: Colors.white, // Set text color to white
+            color: Colors.white,
             fontWeight: FontWeight.bold,
           ),
         ),
         backgroundColor: const Color(0xFFCF2677),
         centerTitle: true,
-        iconTheme: const IconThemeData(color: Colors.white), // Ensures back button is also white
+        iconTheme: const IconThemeData(color: Colors.white),
       ),
       body: Container(
         width: double.infinity,
@@ -188,7 +186,7 @@ class _OrderPageState extends State<OrderPage> with SingleTickerProviderStateMix
                   ),
                   const SizedBox(height: 0),
                   Text(
-                    isAscending ? "Arrange in Ascending Order 🔼" : "Arrange in Descending Order 🔽",
+                    isAscending ? "Arrange from smallest to largest" : "Arrange from largest to smallest", // Changed to words
                     style: TextStyle(
                       fontSize: 23,
                       fontWeight: FontWeight.bold,
@@ -222,7 +220,7 @@ class _OrderPageState extends State<OrderPage> with SingleTickerProviderStateMix
               ),
             ),
             Positioned(
-              top: MediaQuery.of(context).size.height * 0.4, // Adjusted to move the otter slightly up
+              top: MediaQuery.of(context).size.height * 0.4,
               left: 0,
               right: 0,
               child: Center(
@@ -284,14 +282,13 @@ class _OrderPageState extends State<OrderPage> with SingleTickerProviderStateMix
   }
 
   Widget _buildDropTarget(int index) {
-    double baseWidth = 85; // Fixed width for all boxes
-    double baseHeight = 100; // Base height for the smallest box
-    double scaleFactor = 20; // Increase/decrease factor for height
+    double baseWidth = 85;
+    double baseHeight = 100;
+    double scaleFactor = 20;
 
-    // Calculate height based on ascending or descending order
     double height = isAscending
-        ? baseHeight + (index * scaleFactor)  // Increase height in ascending order
-        : baseHeight + ((3 - index) * scaleFactor);  // Decrease height in descending order
+        ? baseHeight + (index * scaleFactor)
+        : baseHeight + ((3 - index) * scaleFactor);
 
     return DragTarget<int>(
       onWillAcceptWithDetails: (data) => !placedNumbers.contains(data),
@@ -308,14 +305,14 @@ class _OrderPageState extends State<OrderPage> with SingleTickerProviderStateMix
       },
       builder: (context, candidateData, rejectedData) {
         return Container(
-          width: baseWidth,  // Keep width fixed
-          height: height,   // Adjust height based on order
+          width: baseWidth,
+          height: height,
           decoration: BoxDecoration(
             color: Colors.white,
             border: Border.all(color: Colors.pink, width: 4),
             borderRadius: BorderRadius.circular(12),
           ),
-          alignment: Alignment.center,  // Align the content in the center of the card
+          alignment: Alignment.center,
           child: userOrder[index] != null
               ? Text(
             userOrder[index].toString(),
@@ -335,7 +332,7 @@ class _OrderPageState extends State<OrderPage> with SingleTickerProviderStateMix
         color: color,
         borderRadius: BorderRadius.circular(12),
       ),
-      alignment: Alignment.center,  // Center the number in the box
+      alignment: Alignment.center,
       child: number != null
           ? Text(
         number.toString(),
