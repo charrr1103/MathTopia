@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:collection/collection.dart';
 
+/// OrderPage is a StatefulWidget that allows users to drag and drop numbers
+/// into their correct order (ascending or descending).
 class OrderPage extends StatefulWidget {
   const OrderPage({super.key});
 
@@ -11,59 +13,62 @@ class OrderPage extends StatefulWidget {
 }
 
 class _OrderPageState extends State<OrderPage> with SingleTickerProviderStateMixin {
-  late List<int> numbers;
-  late List<int?> userOrder;
-  late bool isAscending;
-  bool isCompleted = false;
-  Set<int> placedNumbers = {};
+  late List<int> numbers; // List of randomly generated numbers to be ordered
+  late List<int?> userOrder; // User's attempted order of the numbers
+  late bool isAscending; // Flag to indicate if the order should be ascending or descending
+  bool isCompleted = false; // Flag to track if the user has completed the task
+  Set<int> placedNumbers = {}; // Set of numbers that have been placed in the correct positions
 
-  late AnimationController _controller;
+  late AnimationController _controller; // Controller for animating the otter's movement
 
   @override
   void initState() {
     super.initState();
-    _generateNumbers();
+    _generateNumbers(); // Generate initial set of numbers when the page loads
     _controller = AnimationController(
       vsync: this,
       duration: const Duration(seconds: 3),
-    )..repeat(reverse: true);
+    )..repeat(reverse: true); // Repeat animation of otter
   }
 
   @override
   void dispose() {
-    _controller.dispose();
+    _controller.dispose(); // Clean up the animation controller when the page is disposed
     super.dispose();
   }
 
+  /// Generates a list of 4 unique random numbers and sets up the ordering (ascending or descending).
   void _generateNumbers() {
     setState(() {
       final random = Random();
       numbers = List.generate(4, (_) => random.nextInt(999) + 1); // Generate numbers from 1 to 999
-      numbers = numbers.toSet().toList();
+      numbers = numbers.toSet().toList(); // Ensure unique numbers
       while (numbers.length < 4) {
-        numbers.add(random.nextInt(999) + 1);
+        numbers.add(random.nextInt(999) + 1); // Add more numbers until there are 4 unique numbers
       }
-      numbers.shuffle();
-      isAscending = random.nextBool();
-      userOrder = List.filled(4, null);
-      isCompleted = false;
-      placedNumbers.clear();
+      numbers.shuffle(); // Shuffle the numbers randomly
+      isAscending = random.nextBool(); // Randomly decide if the order is ascending or descending
+      userOrder = List.filled(4, null); // Initialize user's order as null
+      isCompleted = false; // Reset completion flag
+      placedNumbers.clear(); // Clear any previously placed numbers
     });
   }
 
+  /// Checks if the user’s order matches the correct order.
   void _checkAnswer() {
-    if (!userOrder.contains(null)) {
-      List<int> correctOrder = List.from(numbers)..sort();
-      if (!isAscending) correctOrder = correctOrder.reversed.toList();
+    if (!userOrder.contains(null)) { // Only check when all numbers are placed
+      List<int> correctOrder = List.from(numbers)..sort(); // Sort numbers to get the ascending order
+      if (!isAscending) correctOrder = correctOrder.reversed.toList(); // Reverse for descending order
 
-      bool isCorrect = const ListEquality().equals(userOrder, correctOrder);
+      bool isCorrect = const ListEquality().equals(userOrder, correctOrder); // Compare user's order with the correct order
       setState(() {
-        isCompleted = isCorrect;
+        isCompleted = isCorrect; // Set completion flag based on correctness
       });
-      _showResultDialog(isCorrect ? "Correct! 🎉" : "Try Again! ❌", isCorrect);
+      _showResultDialog(isCorrect ? "Correct! 🎉" : "Try Again! ❌", isCorrect); // Show result dialog
     }
   }
 
+  /// Displays a dialog with the result message and provides options to proceed.
   void _showResultDialog(String message, bool isCorrect) {
     showDialog(
       context: context,
@@ -81,9 +86,9 @@ class _OrderPageState extends State<OrderPage> with SingleTickerProviderStateMix
               onPressed: () {
                 Navigator.pop(context);
                 if (isCorrect) {
-                  _generateNumbers();
+                  _generateNumbers(); // Generate new numbers if the answer is correct
                 } else {
-                  _clearOrder();
+                  _clearOrder(); // Reset the order if the answer is incorrect
                 }
               },
               style: ElevatedButton.styleFrom(
@@ -119,10 +124,11 @@ class _OrderPageState extends State<OrderPage> with SingleTickerProviderStateMix
     );
   }
 
+  /// Clears the user's order and resets the placed numbers.
   void _clearOrder() {
     setState(() {
-      userOrder = List.filled(4, null);
-      placedNumbers.clear();
+      userOrder = List.filled(4, null); // Reset the user's order to null
+      placedNumbers.clear(); // Clear placed numbers
     });
   }
 
@@ -162,6 +168,7 @@ class _OrderPageState extends State<OrderPage> with SingleTickerProviderStateMix
                 fit: BoxFit.cover,
               ),
             ),
+            // Display the instruction texts
             Positioned(
               top: 15,
               left: 0,
@@ -186,7 +193,7 @@ class _OrderPageState extends State<OrderPage> with SingleTickerProviderStateMix
                   ),
                   const SizedBox(height: 0),
                   Text(
-                    isAscending ? "Arrange from smallest to largest" : "Arrange from largest to smallest", // Changed to words
+                    isAscending ? "Arrange from smallest to largest" : "Arrange from largest to smallest", // Instruction based on order
                     style: TextStyle(
                       fontSize: 23,
                       fontWeight: FontWeight.bold,
@@ -196,6 +203,7 @@ class _OrderPageState extends State<OrderPage> with SingleTickerProviderStateMix
                 ],
               ),
             ),
+            // Display draggable numbers
             Positioned(
               top: 120,
               left: 50,
@@ -210,6 +218,7 @@ class _OrderPageState extends State<OrderPage> with SingleTickerProviderStateMix
                     .toList(),
               ),
             ),
+            // Display drop targets for numbers
             Positioned(
               bottom: 120,
               left: 0,
@@ -219,6 +228,7 @@ class _OrderPageState extends State<OrderPage> with SingleTickerProviderStateMix
                 children: List.generate(4, (index) => _buildDropTarget(index)),
               ),
             ),
+            // Animated otter
             Positioned(
               top: MediaQuery.of(context).size.height * 0.4,
               left: 0,
@@ -239,6 +249,7 @@ class _OrderPageState extends State<OrderPage> with SingleTickerProviderStateMix
                 ),
               ),
             ),
+            // Clear button at the bottom
             Positioned(
               bottom: 60,
               left: 0,
@@ -272,6 +283,7 @@ class _OrderPageState extends State<OrderPage> with SingleTickerProviderStateMix
     );
   }
 
+  /// Builds a draggable number widget.
   Widget _buildDraggableNumber(int number) {
     return Draggable<int>(
       data: number,
@@ -281,6 +293,7 @@ class _OrderPageState extends State<OrderPage> with SingleTickerProviderStateMix
     );
   }
 
+  /// Builds a drop target container for the numbers.
   Widget _buildDropTarget(int index) {
     double baseWidth = 85;
     double baseHeight = 100;
@@ -301,7 +314,7 @@ class _OrderPageState extends State<OrderPage> with SingleTickerProviderStateMix
           userOrder[index] = data;
           placedNumbers.add(data);
         });
-        _checkAnswer();
+        _checkAnswer(); // Check answer after placing number
       },
       builder: (context, candidateData, rejectedData) {
         return Container(
@@ -324,6 +337,7 @@ class _OrderPageState extends State<OrderPage> with SingleTickerProviderStateMix
     );
   }
 
+  /// Builds a number box container.
   Widget _buildNumberBox(int? number, Color color) {
     return Container(
       width: 80,
