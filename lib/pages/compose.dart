@@ -2,6 +2,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
+// ComposePage widget is the main screen for the compose number game.
 class ComposePage extends StatefulWidget {
   const ComposePage({super.key});
 
@@ -9,17 +10,24 @@ class ComposePage extends StatefulWidget {
   State<ComposePage> createState() => _ComposePageState();
 }
 
+// State class for managing the ComposePage logic and UI.
 class _ComposePageState extends State<ComposePage> {
-  List<int> numbers = List.generate(10, (index) => index); // 0-9
+  // List of numbers (0-9) for the user to choose from.
+  List<int> numbers = List.generate(10, (index) => index); 
+
+  // List of two selected numbers for the target.
   List<int?> selectedNumbers = [null, null];
+  
+  // The target number the user needs to form by selecting two numbers.
   int targetNumber = 10;
 
   @override
   void initState() {
     super.initState();
-    _generateNewTarget();
+    _generateNewTarget(); // Generate the initial target number when the screen loads.
   }
 
+  // Function to generate a new random target number by summing two random numbers.
   void _generateNewTarget() {
     Random random = Random();
     int num1, num2;
@@ -29,21 +37,24 @@ class _ComposePageState extends State<ComposePage> {
       num2 = random.nextInt(10); // Another random number between 0-9
     } while (num1 + num2 == 0); // Ensure target is not 0
 
-    targetNumber = num1 + num2; // Ensure target is a sum of two numbers
-    setState(() {});
+    targetNumber = num1 + num2; // Ensure target is the sum of two numbers
+    setState(() {}); // Rebuild the widget to show the new target
   }
 
+  // Function to clear the selected numbers.
   void _checkAnswer() {
     setState(() {
-      selectedNumbers = [null, null];
+      selectedNumbers = [null, null]; // Reset the selected numbers.
     });
   }
 
+  // Function to display the result dialog with feedback on the answer.
   void _showResultDialog() {
     int sum = (selectedNumbers[0] ?? 0) + (selectedNumbers[1] ?? 0);
-    bool isCorrect = sum == targetNumber;
+    bool isCorrect = sum == targetNumber; // Check if the sum is correct.
     String message = isCorrect ? "Correct! 🎉" : "Wrong! ❌";
 
+    // Show the dialog with the result
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
@@ -68,11 +79,11 @@ class _ComposePageState extends State<ComposePage> {
             width: double.infinity,
             child: ElevatedButton(
               onPressed: () {
-                Navigator.pop(context);
+                Navigator.pop(context); // Close the dialog
                 if (isCorrect) {
-                  _generateNewTarget(); // Only generate new target if correct
+                  _generateNewTarget(); // Generate a new target if the answer is correct
                 }
-                _checkAnswer(); // Always clear selection
+                _checkAnswer(); // Always clear the selected numbers
               },
               style: ElevatedButton.styleFrom(
                 backgroundColor: isCorrect ? Colors.pink : Colors.orange,
@@ -109,6 +120,7 @@ class _ComposePageState extends State<ComposePage> {
 
   @override
   Widget build(BuildContext context) {
+    // Display result dialog if both numbers are selected
     if (selectedNumbers[0] != null && selectedNumbers[1] != null) {
       Future.delayed(const Duration(milliseconds: 300), _showResultDialog);
     }
@@ -145,6 +157,7 @@ class _ComposePageState extends State<ComposePage> {
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       const SizedBox(height: 40),
+                      // Display the target number
                       Text(
                         "Add two numbers to make:",
                         style: TextStyle(
@@ -163,7 +176,7 @@ class _ComposePageState extends State<ComposePage> {
                           padding: const EdgeInsets.symmetric(
                               horizontal: 20, vertical: 10),
                           child: Text(
-                            "$targetNumber",
+                            "$targetNumber", // Show the current target number
                             style: const TextStyle(
                               fontSize: 30,
                               fontWeight: FontWeight.bold,
@@ -182,17 +195,19 @@ class _ComposePageState extends State<ComposePage> {
                         ),
                       ),
                       const SizedBox(height: 10),
-                      Padding( // Add padding around the Wrap widget
+                      Padding( 
                         padding: const EdgeInsets.symmetric(horizontal: 10),
                         child: Wrap(
                           alignment: WrapAlignment.center,
                           spacing: 5,
                           runSpacing: 10,
-                          children:
-                          numbers.map((num) => _buildDraggableNumber(num)).toList(),
+                          children: numbers
+                              .map((num) => _buildDraggableNumber(num))
+                              .toList(),
                         ),
                       ),
                       const SizedBox(height: 40),
+                      // Display the drop targets where the user can drag numbers
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
@@ -202,6 +217,7 @@ class _ComposePageState extends State<ComposePage> {
                         ],
                       ),
                       const SizedBox(height: 120),
+                      // Clear button to reset the selected numbers
                       ElevatedButton(
                         onPressed: _checkAnswer,
                         style: ElevatedButton.styleFrom(
@@ -235,6 +251,7 @@ class _ComposePageState extends State<ComposePage> {
     );
   }
 
+  // Build a draggable number widget.
   Widget _buildDraggableNumber(int number) {
     return Draggable<int>(
       data: number,
@@ -244,12 +261,13 @@ class _ComposePageState extends State<ComposePage> {
     );
   }
 
+  // Build a drop target where a user can drop a number.
   Widget _buildDropTarget(int index) {
     return DragTarget<int>(
       onWillAcceptWithDetails: (data) => selectedNumbers[index] == null,
       onAcceptWithDetails: (details) {
         setState(() {
-          selectedNumbers[index] = details.data;
+          selectedNumbers[index] = details.data; // Place the number into the drop target
         });
       },
       builder: (context, candidateData, rejectedData) {
@@ -265,6 +283,7 @@ class _ComposePageState extends State<ComposePage> {
                 border: Border.all(color: Colors.pink, width: 4),
               ),
             ),
+            // Display the selected number inside the target if it is selected.
             if (selectedNumbers[index] != null)
               Text(
                 selectedNumbers[index].toString(),
@@ -280,6 +299,7 @@ class _ComposePageState extends State<ComposePage> {
     );
   }
 
+  // Build a box for displaying a number.
   Widget _buildNumberBox(int? number, Color color) {
     return Container(
       width: 70,
@@ -291,9 +311,9 @@ class _ComposePageState extends State<ComposePage> {
       alignment: Alignment.center,
       child: number != null
           ? Text(
-        number.toString(),
-        style: const TextStyle(fontSize: 32, color: Colors.white),
-      )
+              number.toString(),
+              style: const TextStyle(fontSize: 32, color: Colors.white),
+            )
           : null,
     );
   }
