@@ -26,11 +26,11 @@ class _ComparePageState extends State<ComparePage> {
   void _generateNumbers() {
     setState(() {
       final random = Random();
-      number1 = random.nextInt(99) + 1;
-      number2 = random.nextInt(99) + 1;
+      number1 = random.nextInt(999) + 1; // Generate numbers from 1 to 999
+      number2 = random.nextInt(999) + 1; // Generate numbers from 1 to 999
 
       while (number1 == number2) {
-        number2 = random.nextInt(99) + 1;
+        number2 = random.nextInt(999) + 1; // Generate numbers from 1 to 999
       }
 
       leftCardNumber = null;
@@ -69,7 +69,7 @@ class _ComparePageState extends State<ComparePage> {
                   }
                 },
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.pink, // Button remains pink
+                  backgroundColor: isCorrect ? Colors.pink : Colors.orange,
                   padding: const EdgeInsets.symmetric(vertical: 12),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(10),
