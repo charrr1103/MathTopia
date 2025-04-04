@@ -2,6 +2,8 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
+/// A StatefulWidget that allows children to compare two numbers
+/// by dragging them into left and right cards and identifying the larger number.
 class ComparePage extends StatefulWidget {
   const ComparePage({super.key});
 
@@ -10,12 +12,12 @@ class ComparePage extends StatefulWidget {
 }
 
 class _ComparePageState extends State<ComparePage> {
-  late int number1;
-  late int number2;
-  int? leftCardNumber;
-  int? rightCardNumber;
-  bool isNumber1Used = false;
-  bool isNumber2Used = false;
+  late int number1; // First random number
+  late int number2; // Second random number
+  int? leftCardNumber; // Number dropped on the left card
+  int? rightCardNumber; // Number dropped on the right card
+  bool isNumber1Used = false; // Track if number1 has been used
+  bool isNumber2Used = false; // Track if number2 has been used
 
   @override
   void initState() {
@@ -23,16 +25,19 @@ class _ComparePageState extends State<ComparePage> {
     _generateNumbers();
   }
 
+  /// Generates two distinct random numbers from 1 to 999
   void _generateNumbers() {
     setState(() {
       final random = Random();
-      number1 = random.nextInt(999) + 1; // Generate numbers from 1 to 999
-      number2 = random.nextInt(999) + 1; // Generate numbers from 1 to 999
+      number1 = random.nextInt(999) + 1;
+      number2 = random.nextInt(999) + 1;
 
+      // Ensure the two numbers are not equal
       while (number1 == number2) {
-        number2 = random.nextInt(999) + 1; // Generate numbers from 1 to 999
+        number2 = random.nextInt(999) + 1;
       }
 
+      // Reset selections
       leftCardNumber = null;
       rightCardNumber = null;
       isNumber1Used = false;
@@ -40,6 +45,8 @@ class _ComparePageState extends State<ComparePage> {
     });
   }
 
+  /// Checks whether the right number is greater than the left number
+  /// and shows a feedback dialog.
   void _checkAnswer() {
     if (leftCardNumber != null && rightCardNumber != null) {
       bool isCorrect = (rightCardNumber! > leftCardNumber!);
@@ -47,6 +54,7 @@ class _ComparePageState extends State<ComparePage> {
       String buttonText = isCorrect ? "Next" : "Try Again";
       IconData buttonIcon = isCorrect ? Icons.arrow_forward : Icons.refresh;
 
+      // Show dialog with result
       showDialog(
         context: context,
         builder: (context) => AlertDialog(
@@ -65,7 +73,7 @@ class _ComparePageState extends State<ComparePage> {
                   if (isCorrect) {
                     _generateNumbers(); // Generate new numbers if correct
                   } else {
-                    _clearSelection(); // Reset selection if wrong
+                    _clearSelection(); // Reset only if incorrect
                   }
                 },
                 style: ElevatedButton.styleFrom(
@@ -80,15 +88,11 @@ class _ComparePageState extends State<ComparePage> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                      buttonText, // "Next" or "Try Again"
+                      buttonText,
                       style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.white),
                     ),
                     const SizedBox(width: 10),
-                    Icon(
-                      buttonIcon, // Arrow if correct, refresh if incorrect
-                      color: Colors.white,
-                      size: 28,
-                    ),
+                    Icon(buttonIcon, color: Colors.white, size: 28),
                   ],
                 ),
               ),
@@ -99,7 +103,7 @@ class _ComparePageState extends State<ComparePage> {
     }
   }
 
-
+  /// Clears the selected numbers and resets the draggable availability.
   void _clearSelection() {
     setState(() {
       leftCardNumber = null;
@@ -115,10 +119,7 @@ class _ComparePageState extends State<ComparePage> {
       appBar: AppBar(
         title: const Text(
           "Comparison of Numbers",
-          style: TextStyle(
-            color: Colors.white,
-            fontWeight: FontWeight.bold,
-          ),
+          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
         ),
         backgroundColor: const Color(0xFFCF2677),
         centerTitle: true,
@@ -137,10 +138,7 @@ class _ComparePageState extends State<ComparePage> {
         child: Stack(
           children: [
             Positioned.fill(
-              child: SvgPicture.asset(
-                "assets/compare.svg",
-                fit: BoxFit.cover,
-              ),
+              child: SvgPicture.asset("assets/compare.svg", fit: BoxFit.cover),
             ),
             _buildTitle(),
             _buildDraggableNumbers(),
@@ -152,6 +150,7 @@ class _ComparePageState extends State<ComparePage> {
     );
   }
 
+  /// Builds the instructional title at the top.
   Widget _buildTitle() {
     return Positioned(
       top: 140,
@@ -166,17 +165,15 @@ class _ComparePageState extends State<ComparePage> {
     );
   }
 
+  /// Reusable styled title text
   Widget _buildTitleText(String text) {
     return Text(
       text,
-      style: TextStyle(
-        fontSize: 28,
-        fontWeight: FontWeight.bold,
-        color: Colors.brown.shade700,
-      ),
+      style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold, color: Colors.brown.shade700),
     );
   }
 
+  /// Builds the draggable number cards (pink and blue)
   Widget _buildDraggableNumbers() {
     return Positioned(
       top: 230,
@@ -194,15 +191,17 @@ class _ComparePageState extends State<ComparePage> {
     );
   }
 
+  /// Wraps a number in a draggable widget
   Widget _buildDraggable(int number, Color color) {
     return Draggable<int>(
       data: number,
-      feedback: _buildNumberBox(number, color),
-      childWhenDragging: _buildNumberBox(null, color),
-      child: _buildNumberBox(number, color),
+      feedback: _buildNumberBox(number, color), // Dragged view
+      childWhenDragging: _buildNumberBox(null, color), // Placeholder while dragging
+      child: _buildNumberBox(number, color), // Default view
     );
   }
 
+  /// Builds the drop zones (left and right cards)
   Widget _buildDropTargets() {
     return Positioned(
       bottom: 150,
@@ -234,6 +233,7 @@ class _ComparePageState extends State<ComparePage> {
     );
   }
 
+  /// Styled number container used for both draggable and dragged view
   Widget _buildNumberBox(int? number, Color color) {
     return Container(
       width: 100,
@@ -245,13 +245,14 @@ class _ComparePageState extends State<ComparePage> {
       alignment: Alignment.center,
       child: number != null
           ? Text(
-        number.toString(),
-        style: const TextStyle(fontSize: 32, color: Colors.white),
-      )
+              number.toString(),
+              style: const TextStyle(fontSize: 32, color: Colors.white),
+            )
           : null,
     );
   }
 
+  /// Labels for the drop zones ("Smaller" and "Bigger")
   Widget _buildLabel(String text) {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
@@ -266,6 +267,7 @@ class _ComparePageState extends State<ComparePage> {
     );
   }
 
+  /// Builds a single drop target. isRight determines left/right side.
   Widget _buildDropTarget(bool isRight) {
     return DragTarget<int>(
       onAcceptWithDetails: (details) {
@@ -276,6 +278,8 @@ class _ComparePageState extends State<ComparePage> {
           } else {
             leftCardNumber = droppedValue;
           }
+
+          // Mark which number was used
           isNumber1Used = droppedValue == number1;
           isNumber2Used = droppedValue == number2;
         });
@@ -300,6 +304,7 @@ class _ComparePageState extends State<ComparePage> {
     );
   }
 
+  /// Builds the "Clear" button to reset current selection
   Widget _buildClearButton() {
     return Positioned(
       bottom: 60,
