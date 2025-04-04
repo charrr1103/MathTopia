@@ -49,9 +49,8 @@ class _StartPageState extends State<StartPage> {
                 ),
               ),
             ),
-// Mute/Unmute button moved slightly down
             Positioned(
-              top: 50, // Increased from 20 to 50
+              top: 50, 
               right: 20,
               child: IconButton(
                 icon: Icon(
@@ -88,6 +87,7 @@ class _StartPageState extends State<StartPage> {
                     ),
                     elevation: 10,
                   ),
+                  //start button
                   child: const Text(
                     "Start",
                     style: TextStyle(
