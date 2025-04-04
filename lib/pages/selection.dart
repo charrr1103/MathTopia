@@ -45,13 +45,13 @@ class _SelectionPageState extends State<SelectionPage> {
         title: const Text(
           "Select an Option",
           style: TextStyle(
-            color: Colors.white, // Set text color to white
+            color: Colors.white, 
             fontWeight: FontWeight.bold,
           ),
         ),
         backgroundColor: const Color(0xFFCF2677),
         centerTitle: true,
-        iconTheme: const IconThemeData(color: Colors.white), // Ensures back button is also white
+        iconTheme: const IconThemeData(color: Colors.white), 
       ),
       body: Container(
         width: double.infinity,
@@ -69,7 +69,7 @@ class _SelectionPageState extends State<SelectionPage> {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => const ComparePage(),
+                      builder: (context) => const ComparePage(), //link to compare page
                     ),
                   );
                 },
@@ -83,7 +83,7 @@ class _SelectionPageState extends State<SelectionPage> {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => const OrderPage(),
+                      builder: (context) => const OrderPage(), //link to order page
                     ),
                   );
                 },
@@ -97,7 +97,7 @@ class _SelectionPageState extends State<SelectionPage> {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => const ComposePage(),
+                      builder: (context) => const ComposePage(), //link to compose page
                     ),
                   );
                 },
